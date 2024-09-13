@@ -1,24 +1,22 @@
 {
-  "include": ["src/**/*.ts"],
+  "include": ["site/**/*.ts"],
   "compilerOptions": {
     "target": "ES2020",
     "useDefineForClassFields": true,
     "module": "NodeNext",
     "esModuleInterop": true,
-
-    "declaration": true,
     
     "composite": true,
     "noImplicitAny": false,
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "rootDir": "./src",
-    "outDir": "./dist"
-  },
-  "references": [
-    {
-      "path": "./tsconfig.site.json"
+    "rootDir": "./site",
+    "outDir": "./site-dist",
+    "paths": {
+      "html2ansi": [
+        "./dist"
+      ]
     }
-  ]
+  }
 }

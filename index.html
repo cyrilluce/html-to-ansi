@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>html2ansi online</title>
+    <style>
+        html, body{
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #app{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+        }
+        #input, #output{
+            flex: 1;
+            padding: 1em;
+        }
+        #input-text, #output-text{
+            width: 100%;
+            height: 100%;
+        }
+        #copy-button{
+            position: absolute;
+            right: 2em;
+            bottom: 2em;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div id="input">
+            <textarea id="input-text" placeholder="Enter or Paste HTML here..."></textarea>
+        </div>
+        <div id="output">
+            <textarea id="output-text" readonly></textarea>
+            <button id="copy-button">Copy with ANSI</button>
+        </div>
+    </div>
+    <script src="./site/index.ts" type="module"></script>
+</body>
+</html>
