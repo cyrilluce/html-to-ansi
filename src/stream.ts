@@ -1,40 +1,37 @@
-import { Parser } from 'htmlparser2'
-import { Duplex } from 'node:stream'
-import { createParser, type Stack } from './parser'
+import { createParser } from './parser'
 
-export class Html2AnsiStream extends Duplex {
-    protected parser: Parser
-    protected stack: Stack[]
-    #finished = false
-    #read = false
+export class Html2AnsiStream implements ReadableWritablePair<string, string> {
+    readable: ReadableStream<string>
+    writable: WritableStream<string>
     constructor() {
-        super({
-            decodeStrings: true
-        })
         const { parser, stack } = createParser()
-        this.parser = parser
-        this.stack = stack
-    }
-    override _write(chunk: any, encoding: BufferEncoding, callback: (error?: Error | null) => void): void {
-        this.parser.write(String(chunk))
-        callback()
-    }
-
-    override _final(callback: (error?: Error | null) => void) {
-        this.#finished = true
-        this.#flush()
-        callback()
-    }
-
-    #flush() {
-        if (this.#finished && this.#read) {
-            this.push(Buffer.from(this.stack[0].texts.join('')))
-            // end
-            this.push(null)
-        }
-    }
-    override _read(size: number): void {
-        this.#read = true
-        this.#flush()
+        const finished = withResolvers<string>()
+        this.readable = new ReadableStream({
+            pull: async (controller) => {
+                const data = await finished.promise
+                controller.enqueue(data)
+                controller.close()
+            },
+        })
+        this.writable = new WritableStream({
+            write(chunk) {
+                parser.write(String(chunk))
+            },
+            close() {
+                parser.end()
+                finished.resolve(stack[0].texts.join(''))
+            }
+        })
     }
 }
+
+function withResolvers<T = any>() {
+    let resolve: (value: T) => void
+    let reject: (reason?: any) => void
+    const promise = new Promise<T>((res, rej) => {
+      resolve = res
+      reject = rej
+    })
+    // @ts-ignore
+    return { promise, resolve, reject }
+  }

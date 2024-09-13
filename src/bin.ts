@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { Readable, Writable } from 'node:stream'
+import { type Readable, type Writable, Stream } from 'node:stream'
 import { program } from 'commander'
 import { createReadStream, createWriteStream } from 'node:fs'
 import { Html2AnsiStream } from './stream'
@@ -14,13 +14,14 @@ program
         const { file, output } = opts
         let input: Readable = process.stdin
         if(file){
-            input = createReadStream(file)
+            input = createReadStream(file, 'utf-8')
         }
         let out: Writable = process.stdout
         if(output){
             out = await createWriteStream(output)
         }
-        input.pipe(new Html2AnsiStream()).pipe(out)
+        const stream = new Html2AnsiStream()
+        Stream.Readable.toWeb(input).pipeThrough<string>(stream as any).pipeTo(Stream.Writable.toWeb(out))
     })
 
 program.parse()

@@ -1,4 +1,4 @@
-import chalk from 'chalk'
+import defaultChalk, { type Chalk } from 'chalk'
 import { Parser } from 'htmlparser2'
 import { parseStyle } from './parse-style'
 import debug from 'debug'
@@ -21,8 +21,11 @@ export interface Stack {
 const humanColorRegex = /^[a-z]+$/i
 const rgbColorRegex = /^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/
 
-export function html2ansi(html: string) {
-    const { stack, parser } = createParser()
+interface Options {
+    chalk?: Chalk
+}
+export function html2ansi(html: string, opts: Options = {}) {
+    const { stack, parser } = createParser(opts)
 
     parser.write(html)
     parser.end()
@@ -31,7 +34,8 @@ export function html2ansi(html: string) {
 }
 
 
-export function createParser() {
+export function createParser(opts: Options = {}) {
+    const { chalk = defaultChalk } = opts
     const stack: Stack[] = [
         // root
         {
@@ -105,7 +109,7 @@ export function createParser() {
             const closed = stack.pop()!
             const parent = stack[stack.length - 1]
             let text = closed.texts.join('')
-            let modifier: chalk.Chalk = chalk
+            let modifier: Chalk = chalk
             if (closed.color) {
                 const color = closed.color
                 if (color.startsWith('#')) {
