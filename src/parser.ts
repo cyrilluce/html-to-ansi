@@ -53,6 +53,8 @@ export function createParser(opts: Options = {}) {
             switch (name) {
                 case 'span':
                 case 'font':
+                case 'a':
+                case 'em':
                     break
                 case 'i':
                     s.italic = true

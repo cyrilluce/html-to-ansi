@@ -14,6 +14,8 @@ describe('html2ansi', ()=>{
         expect(html2ansi(`<i>test</i>`)).toBe(chalk.italic('test'))
         expect(html2ansi(`<u>test</u>`)).toBe(chalk.underline('test'))
         expect(html2ansi(`<del>test</del>`)).toBe(chalk.strikethrough('test'))
+
+        expect(html2ansi(`<a href="https://www.cnbeta.com.tw/articles/tech/1445200.htm" target="_blank" style="box-sizing: border-box; transition: 0.2s; margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: 700; font-stretch: inherit; font-size: 20px; line-height: 35px; font-family: inherit; font-optical-sizing: inherit; font-size-adjust: inherit; font-kerning: inherit; font-feature-settings: inherit; font-variation-settings: inherit; vertical-align: baseline; color: rgb(192, 0, 0); text-decoration: none; background-color: transparent;">test</a>`)).toBe(chalk.rgb(192, 0, 0)('test'))
     })
     
     it('compose', ()=>{
