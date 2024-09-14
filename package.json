@@ -1,7 +1,7 @@
 {
   "name": "html2ansi",
   "version": "0.0.1",
-  "description": "Convert HTML to colored ANSI colored text",
+  "description": "Convert HTML to ANSI colored text",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -24,9 +24,11 @@
   },
   "keywords": [
     "html",
+    "convert",
     "chalk",
     "ansi",
     "color",
+    "colored",
     "stream"
   ],
   "author": "cyrilluce@gmail.com",

@@ -1,6 +1,6 @@
 # html2ansi
 
-Convert HTML to colored ANSI colored text.
+Convert HTML to ANSI colored text.
 
 Online playground: <https://cyrilluce.github.io/html-to-ansi/>
 
